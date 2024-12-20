@@ -1,3 +1,16 @@
+<p>Steps to Install and Run Application</p>
+<ul>
+    <li>Take a git clone</li>
+    <li>Go to the folder into command prompt or terminal</li>
+    <li>Run the command - composer install</li>
+    <li>Copy .env.example to .env and change the database configurations</li>
+    <li>Run the command - php artisan serve</li>
+</ul>
+<p>To the run application below server requirements</p>
+<ul>
+    <li>PHP - 8.3</li>
+    <li>Mysql</li>
+</ul>
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
