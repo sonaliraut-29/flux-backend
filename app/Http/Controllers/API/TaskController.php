@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+    /*
+     * Display a listing of the resource.
+    */
     public function index(Request $request, $todo_list_id)
     {
         $todoList = TodoList::find($todo_list_id);
@@ -41,6 +44,9 @@ class TaskController extends Controller
         return response()->json($tasks);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request, $todo_list_id)
     {
         $todoList = TodoList::find($todo_list_id);
@@ -57,6 +63,9 @@ class TaskController extends Controller
         return response()->json($task, 201);
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function show($todo_list_id, $id)
     {
         $task = Task::where('todo_list_id', $todo_list_id)->find($id);
@@ -66,6 +75,9 @@ class TaskController extends Controller
         return response()->json($task);
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, $todo_list_id, $id)
     {
         $task = Task::where('todo_list_id', $todo_list_id)->find($id);
@@ -76,7 +88,9 @@ class TaskController extends Controller
         $task->update($request->all());
         return response()->json($task);
     }
-
+    /**
+     *  Remove the specified resource from storage.
+     */
     public function destroy($todo_list_id, $id)
     {
         $task = Task::where('todo_list_id', $todo_list_id)->find($id);
@@ -88,6 +102,9 @@ class TaskController extends Controller
         return response()->json(['message' => 'Task deleted successfully']);
     }
 
+    /**
+     * Complete the specified resource from storage.
+     */
     public function complete($todo_list_id, $id) {
         $task = Task::where('todo_list_id', $todo_list_id)->find($id);
         if (!$task) {
