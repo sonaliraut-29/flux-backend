@@ -3,7 +3,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\TodoList;
+use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TodoListController extends Controller
 {
@@ -12,7 +14,8 @@ class TodoListController extends Controller
      */
     public function index(Request $request)
     {
-        $query = TodoList::query();
+        $userId = Auth::id();
+        $query = TodoList::where('user_id', $userId);
 
         if ($request->has('search') && $request->search) {
             $query->where('name', 'like', '%' . $request->search . '%');
@@ -25,6 +28,7 @@ class TodoListController extends Controller
                 $query->orderBy($sortBy, $sortDirection);
             }
         }
+
         $todoLists = $query->get();
 
         return response()->json($todoLists);
@@ -36,7 +40,11 @@ class TodoListController extends Controller
     public function store(Request $request)
     {
         $request->validate(['name' => 'required|string|max:255']);
-        $todoList = TodoList::create($request->all());
+        $todoList = TodoList::create([
+            'name' => $request->name,
+            'user_id' => Auth::id(),
+        ]);
+
         return response()->json($todoList, 201);
     }
 
@@ -45,9 +53,9 @@ class TodoListController extends Controller
      */
     public function show($id)
     {
-        $todoList = TodoList::with('tasks')->find($id);
+        $todoList = TodoList::with('tasks')->where('user_id', Auth::id())->find($id);
         if (!$todoList) {
-            return response()->json(['message' => 'Todo List not found'], 404);
+            return response()->json(['message' => 'Todo List not found or unauthorized'], 404);
         }
         return response()->json($todoList);
     }
@@ -57,9 +65,9 @@ class TodoListController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $todoList = TodoList::find($id);
+        $todoList = TodoList::where('user_id', Auth::id())->find($id);
         if (!$todoList) {
-            return response()->json(['message' => 'Todo List not found'], 404);
+            return response()->json(['message' => 'Todo List not found or unauthorized'], 404);
         }
         $todoList->update($request->all());
         return response()->json($todoList);
@@ -70,9 +78,9 @@ class TodoListController extends Controller
      */
     public function destroy($id)
     {
-        $todoList = TodoList::find($id);
+        $todoList = TodoList::where('user_id', Auth::id())->find($id);
         if (!$todoList) {
-            return response()->json(['message' => 'Todo List not found'], 404);
+            return response()->json(['message' => 'Todo List not found or unauthorized'], 404);
         }
         $todoList->delete();
         return response()->json(['message' => 'Todo List deleted successfully']);
