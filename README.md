@@ -3,6 +3,7 @@
     <li>Take a git clone</li>
     <li>Go to the folder into command prompt or terminal</li>
     <li>Run the command - composer install</li>
+    <li>Run the command - php artisan passport:install</li>
     <li>Copy .env.example to .env and change the database configurations</li>
     <li>Run the command - php artisan serve</li>
 </ul>
